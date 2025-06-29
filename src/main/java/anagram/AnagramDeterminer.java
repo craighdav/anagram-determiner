@@ -27,7 +27,8 @@ public final class AnagramDeterminer {
 	 * whether or not they're anagrams of each other. Each string should
 	 * only contain letters of the English alphabet, spaces, and standard
 	 * punctuation characters, along with hyphens, underscores, 
-	 * and apostrophes.
+	 * and apostrophes. Also, neither string should be null or empty
+	 * after the removal of leading and trailing spaces
 	 * 
 	 * @param s1Str String containing characters from the English alphabet
 	 * @param s2Str String containing characters from the English alphabet
@@ -43,7 +44,7 @@ public final class AnagramDeterminer {
 						.map(s1Clean -> {
 							Boolean isAnagram 
 								= getClean(s2Str)
-								.map(s2Clean -> 
+									.map(s2Clean -> 
 										foundAnagram(s1Clean, s2Clean))
 								.orElse(false);
 								return isAnagram;
@@ -55,9 +56,10 @@ public final class AnagramDeterminer {
 		
 	}
 	
-	/* First validate the input string to ensure that it contains only letters
-	 * 	of the English alphabet, blank spaces, or common punctuation characters
-	 * 	and word separators (hyphens and underscores).
+	/* First validate the input string to ensure that it's neither null
+	 *  nor empty and that it contains only letters of the English alphabet, 
+	 *  blank spaces, or common punctuation characters and word separators 
+	 *  (hyphens and underscores).
 	 * If valid, remove all characters that are not alphabet letters 
 	 *  and return the result wrapped in an Optional. */
 	private static Optional<String> getClean(String inputStr) {
@@ -93,21 +95,21 @@ public final class AnagramDeterminer {
 			return false;
 		}
 		
-		char [] sArr = s1Clean.toCharArray();
-		char [] tArr = s2Clean.toCharArray();
+		char [] s1Arr = s1Clean.toCharArray();
+		char [] s2Arr = s2Clean.toCharArray();
 		
-		Map<Character, Integer> sMap = new HashMap<>();
+		Map<Character, Integer> s1Map = new HashMap<>();
 		
-		for (char s: sArr) {
-			sMap.merge(s, 1, Integer::sum);
+		for (char s1Char: s1Arr) {
+			s1Map.merge(s1Char, 1, Integer::sum);
 		}
 		
-		Map<Character, Integer> tMap = new HashMap<>();
-		for (char t: tArr) {
-			tMap.merge(t, 1, Integer::sum);
+		Map<Character, Integer> s2Map = new HashMap<>();
+		for (char s2Char: s2Arr) {
+			s2Map.merge(s2Char, 1, Integer::sum);
 		}
 		
-		return sMap.equals(tMap);
+		return s1Map.equals(s2Map);
 	}
 	
 }
