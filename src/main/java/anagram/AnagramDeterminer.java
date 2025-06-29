@@ -63,23 +63,16 @@ public final class AnagramDeterminer {
 	 * If valid, remove all characters that are not alphabet letters 
 	 *  and return the result wrapped in an Optional. */
 	private static Optional<String> getClean(String inputStr) {
-		if (inputStr == null) {
-				return Optional.empty();
-		}
 		
-		String cleanStr = inputStr.trim();
-		if (cleanStr.length() == 0) {
-			return Optional.empty();
-		}
+		Optional<String> cleanStrOptional
+			= Optional.ofNullable(inputStr)
+				.map(s -> s.trim())
+				.filter(s -> s.length() > 0)
+				.filter(s -> s.matches("[a-zA-Z \\.,;:!?\\-\\_']+"))
+				.map(s -> s.replaceAll("[ \\.,;:!?\\-\\_']+", "")
+							.toLowerCase());
 		
-		if (! cleanStr.matches("[a-zA-Z \\.,;:!?\\-\\_']+")) {
-			return Optional.empty();
-		}
-		
-		cleanStr = cleanStr.replaceAll("[ \\.,;:!?\\-\\_']+", "")
-					.toLowerCase();
-		
-		return Optional.of(cleanStr);
+		return cleanStrOptional;
 	}
 	
 	/* First check whether both strings of cleaned input (with only 
