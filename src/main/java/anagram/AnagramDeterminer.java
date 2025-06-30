@@ -50,7 +50,8 @@ public final class AnagramDeterminer {
 						.map(s1Clean -> {
 							Boolean isAnagram 
 								= getClean(s2Str)
-									.filter(s2Clean -> s2Clean.length() == s1Clean.length())
+									.filter(s2Clean -> s2Clean.length()
+														== s1Clean.length())
 									.map(s2Clean -> 
 										foundAnagram(s1Clean, s2Clean))
 								.orElse(false);
