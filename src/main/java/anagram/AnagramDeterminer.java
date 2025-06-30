@@ -37,13 +37,20 @@ public final class AnagramDeterminer {
 	 */
 	public static boolean isAnagram(String s1Str, String s2Str) {
 		
-		/* Method composition to retrieve Optional values for cleaned input, 
-			and if valid, determine whether these values are anagrams of each other */
+		/* Method composition retrieves Optional values for cleaned input, 
+			and if valid, determine whether these values are anagrams of
+			each other.
+		   Immediately after retrieving both cleaned inputs (if not empty),
+		   	filter by checking that their lengths are equal, since they
+		   	can only be anagrams of each other if they contain the same
+		   	number of alphabetic characters.
+		   Then call foundAnagram() to make a final determination. */
 		Boolean isAnagramFinalResult 
 					= getClean(s1Str)
 						.map(s1Clean -> {
 							Boolean isAnagram 
 								= getClean(s2Str)
+									.filter(s2Clean -> s2Clean.length() == s1Clean.length())
 									.map(s2Clean -> 
 										foundAnagram(s1Clean, s2Clean))
 								.orElse(false);
@@ -58,9 +65,9 @@ public final class AnagramDeterminer {
 	
 	/* First validate the input string to ensure that it's neither null
 	 *  nor empty and that it contains only letters of the English alphabet, 
-	 *  blank spaces, or common punctuation characters and word separators 
-	 *  (hyphens and underscores).
-	 * If valid, remove all characters that are not alphabet letters 
+	 *  blank spaces, or common punctuation characters, apostrophes 
+	 *  and word separators (hyphens and underscores).
+	 * If valid, remove all valid characters that are not alphabet letters 
 	 *  and return the result wrapped in an Optional. */
 	private static Optional<String> getClean(String inputStr) {
 		
@@ -75,19 +82,12 @@ public final class AnagramDeterminer {
 		return cleanStrOptional;
 	}
 	
-	/* First check whether both strings of cleaned input (with only 
-	 * 	alphabet characters remaining) are the same length. If not, 
-	 * 	immediately return false.
-	 * Otherwise, create a map for each input string, where each key is a distinct
+	/* Create a map for each input string, where each key is a distinct
 	 * 	alphabet letter of that string and the corresponding value
 	 * 	is the number of times that letter appears in the string. 
 	 * If both resulting maps are equal, then the corresponding input
 	 * 	strings must also be equal. */
 	private static boolean foundAnagram(String s1Clean, String s2Clean) {
-		if (s1Clean.length() != s2Clean.length()) {
-			return false;
-		}
-		
 		char [] s1Arr = s1Clean.toCharArray();
 		char [] s2Arr = s2Clean.toCharArray();
 		
